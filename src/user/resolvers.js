@@ -1,16 +1,31 @@
 import mockData from "../json/mockData.json";
 
-let userList = mockData; // 저자의 목록
-let bookList = []; // 책의 목록
+let userList = mockData; // 유저의 목록
+let userUpdateList = [];
+let singleUser = {};
 let userCnt = 3;
-let bookCnt = 0; // 저자,책의 id 순번
+
+let postList = [];
+let postUpdateList = [];
+let postCnt = 0; // 유저,포스트의 id 순번
 
 const resolvers = {
   Query: {
-    // 저자 목록 검색
+    // 유저 목록 검색
     allUser: () => userList,
-    // 책 목록 검색
-    allBook: () => bookList,
+    // 게시글 목록 검색
+    allPost: () => postList,
+
+    // client쪽에서 받은 파라미터를 통한 싱글 유저 검색
+    singleUser(_, userId) {
+      userList.forEach((user) => {
+        if (user.userId == userId.userId) {
+          singleUser = { ...user };
+          // 스프레이드 연산자는 나중 추가되어지는 객체 속성값이 있을 수 있어 추가.
+        }
+      });
+      return singleUser;
+    },
     // findAuthor: ({ id }) =>
     //   userList.find((author) => {
     //     author.id == id;
@@ -21,53 +36,89 @@ const resolvers = {
     //   }),
   },
   Mutation: {
-    // 저자 추가
-    createUser(parent, input, { UserCreateInput }) {
+    // 유저 추가
+    createUser(_, input, { UserCreateInput }) {
       const inputObj = Object.values(input);
       const user = { ...inputObj[0], id: userCnt++ };
       userList.push(user);
       return user;
     },
 
-    // 책 추가
-    createBook(parent, { title, writer }) {
-      const book = { id: bookCnt++, title, writer };
-      bookList.push(book);
-      return book;
+    // 게시글 추가
+    createPost(_, input, { PostInput }) {
+      const postObj = Object.values(input);
+      const post = { ...postObj[0], id: postCnt++ };
+      postList.push(post);
+      return post;
     },
 
-    // 저자 삭제
-    deleteAuthor(parent, { id }) {
-      const idx = userList.findIndex((author) => author.id == id);
-      let author = {};
+    // 유저 업데이트
+    updateUser(_, input, { UserUpdateInput }) {
+      const inputObj = Object.values(input);
+      const updateUser = { ...inputObj[0] };
+
+      userList.forEach((user) => {
+        if (user.userId != updateUser.userId) {
+          userUpdateList.push(user);
+        }
+      });
+      userList = [];
+      userUpdateList.push({ ...updateUser });
+      userList = userUpdateList;
+      return userList;
+    },
+
+    // 게시글 업데이트
+    updatePost(_, input, { PostUpdateInput }) {
+      const postObj = Object.values(input);
+      const updatePost = { ...postObj[0] };
+
+      postList.forEach((post) => {
+        if (post.writer != updatePost.writer) {
+          postUpdateList.push(user);
+        }
+      });
+
+      postList = [];
+      postUpdateList.push({ ...updatePost });
+      postList = postUpdateList;
+      return postList;
+    },
+
+    // 유저삭제
+    deleteUser(_, { id }) {
+      const idx = userList.findIndex((user) => user.id == id);
+      let user = {};
       if (idx >= 0) {
-        author = userList[idx];
+        user = userList[idx];
         userList.splice(idx, 1);
       }
-      return author;
+      return user;
     },
-    // 책 삭제
-    deleteBook(parent, { id }) {
-      const idx = bookList.findIndex((book) => book.id == id);
-      let book = {};
+
+    // 게시글 삭제
+    deletePost(_, { id }) {
+      const idx = postList.findIndex((post) => post.id == id);
+      let post = {};
       if (idx >= 0) {
-        book = bookList[idx];
-        bookList.splice(idx, 1);
+        post = postList[idx];
+        postList.splice(idx, 1);
       }
-      return book;
+      return post;
     },
   },
+
   // 연쇄 리졸버
-  User: {
-    // 저자의 books 정보를 검색
-    books(parent) {
-      const list = [];
-      bookList.forEach((book) => {
-        if (book.author === parent.name) list.push(book);
-      });
-      return list;
-    },
-  },
+  // User: {
+  //   // 유저의 게시글 검색
+  //   posts(parent) {
+  //     const list = [];
+  //     postList.forEach((post) => {
+  //       if (post.title === parent.name) list.push(post);
+  //     });
+  //     return list;
+  //   },
+  // },
 };
 
 export default resolvers;
