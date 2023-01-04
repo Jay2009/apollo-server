@@ -4,14 +4,19 @@
   "description": "apollo-server",
   "main": "server.js",
   "type": "module",
-  "keywords": [],
   "scripts": {
-    "start": "nodemon --experimental-json-modules server.js"
+    "start": "nodemon --exec babel-node src/server.js"
   },
   "license": "ISC",
   "dependencies": {
     "@apollo/server": "^4.3.0",
+    "@babel/core": "^7.20.7",
+    "@babel/node": "^7.20.7",
+    "@babel/preset-env": "^7.20.2",
     "@graphql-tools/schema": "^9.0.12",
+    "bcrypt": "^5.1.0",
+    "crypto-js": "^4.1.1",
+    "csprng": "^0.1.2",
     "graphql": "^16.6.0",
     "nodemon": "^2.0.20"
   }

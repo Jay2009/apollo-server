@@ -1,8 +1,12 @@
-import mockData from "../json/mockData.json";
+import { GraphQLError } from "graphql";
+import bcrypt from "bcrypt";
+import sha256 from "crypto-js/sha256.js";
+import rand from "csprng";
+import userList from "../../dataBase/userList.js";
 
-let userList = mockData; // 유저의 목록
 let userUpdateList = [];
 let singleUser = {};
+let loginUser = {};
 let userCnt = 3;
 
 let postList = [];
@@ -12,7 +16,21 @@ let postCnt = 0; // 유저,포스트의 id 순번
 const resolvers = {
   Query: {
     // 유저 목록 검색
-    allUser: () => userList,
+    allUser: (_, __, { user }) => {
+      if (!user)
+        throw new GraphQLError("Not Authenticated", {
+          extensions: {
+            code: "UNAUTENTICATED",
+          },
+        });
+      if (!user.authority.includes("admin"))
+        throw new GraphQLError("Not Autenticated", {
+          extensions: {
+            code: "FORBIDDEN",
+          },
+        });
+      return user;
+    },
     // 게시글 목록 검색
     allPost: () => postList,
 
@@ -26,30 +44,66 @@ const resolvers = {
       });
       return singleUser;
     },
-    // findAuthor: ({ id }) =>
-    //   userList.find((author) => {
-    //     author.id == id;
+
+    // findLoginUser: ({ loginFormData }) =>
+    //   userList.find((user) => {
+    //     user.userId == loginFormData.userId &&
+    //       user.userPw == loginFormData.userPw;
     //   }),
+
     // findBook: ({ id }) =>
     //   bookList.find((book) => {
     //     book.id == id;
     //   }),
   },
   Mutation: {
-    // 유저 추가
+    signup: (_, { userId, userPw, name }) => {
+      if (userList.find((user) => user.userId == userId)) return false;
+
+      bcrypt.hash(userPw, 10, function (err, userPwHash) {
+        const newUser = {
+          id: userList.length + 1,
+          userId,
+          userPwHash,
+          name,
+          authority: "user",
+          token: "",
+        };
+        userList.push(newUser);
+      });
+      return true;
+    },
+
+    login: (_, { userId, userPw }) => {
+      let user = userList.find((user) => user.userId === userId);
+
+      if (!user) return null;
+      if (user.token) return null;
+      if (!bcrypt.compareSync(userPw, user.userPwHash)) return null;
+      // 비밀번호 불일치시 null
+
+      user.token = sha256(rand(160, 36) + userId + userPw).toString();
+      return user;
+    },
+    logout: (_, __, { user }) => {
+      if (user?.token) {
+        user.token = "";
+        return true;
+      }
+      throw new GraphQLError("Not Authenticated", {
+        extensions: {
+          code: "UNAUTENTICATED",
+        },
+      });
+      // 로그인이 안되어 있거나 토큰이 없을때.
+    },
+
+    // 어드민 계정으로 admin page에서 유저 추가.
     createUser(_, input, { UserCreateInput }) {
       const inputObj = Object.values(input);
       const user = { ...inputObj[0], id: userCnt++ };
       userList.push(user);
       return user;
-    },
-
-    // 게시글 추가
-    createPost(_, input, { PostInput }) {
-      const postObj = Object.values(input);
-      const post = { ...postObj[0], id: postCnt++ };
-      postList.push(post);
-      return post;
     },
 
     // 유저 업데이트
@@ -66,6 +120,14 @@ const resolvers = {
       userUpdateList.push({ ...updateUser });
       userList = userUpdateList;
       return userList;
+    },
+
+    // 게시글 추가
+    createPost(_, input, { PostInput }) {
+      const postObj = Object.values(input);
+      const post = { ...postObj[0], id: postCnt++ };
+      postList.push(post);
+      return post;
     },
 
     // 게시글 업데이트

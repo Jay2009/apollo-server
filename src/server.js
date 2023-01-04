@@ -1,11 +1,13 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import resolvers from "./src/user/resolvers.js";
-import typeDefs from "./src/user/typeDefs.js";
+import context from "./apollo/user/context.js";
+import resolvers from "./apollo/user/resolvers.js";
+import typeDefs from "./apollo/user/typeDefs.js";
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context,
 });
 
 // const { url } = await startStandaloneServer(server, {
@@ -21,7 +23,10 @@ const server = new ApolloServer({
 // });
 
 const { url } = await startStandaloneServer(server, {
-  listen: { port: 4000 },
+  context: async ({ req, res }) => ({
+    token: await getTokenForRequest(req),
+  }),
+  listen: { port: process.env.PORT || 4000 },
 });
 
 console.log(`🚀  Server ready at: ${url}`);

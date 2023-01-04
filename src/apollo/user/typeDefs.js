@@ -2,9 +2,10 @@ const typeDefs = `#graphql
   type User {
     id: ID
     userId: String
-    userPw: String
+    userPwHash: String
     name: String
     authority: String
+    token: String
     post: [Post]
   }
 
@@ -15,11 +16,13 @@ const typeDefs = `#graphql
     authority: String
     post: [Post]
   }
+
   
   type Post {
     id: ID
     title: String
     writer: String
+    content: String
   }
 
   input UserCreateInput {
@@ -60,6 +63,10 @@ const typeDefs = `#graphql
   }
 
   type Mutation {
+    signup(userId: String!, userPw:String!, name: String!): Boolean!
+    login(userId: String!, userPw: String! ) : User
+    logout:Boolean
+
     createUser(input: UserCreateInput!): User
     createPost(input: PostInput!): Post
 
