@@ -2,7 +2,7 @@ import { GraphQLError } from "graphql";
 import bcrypt from "bcrypt";
 import sha256 from "crypto-js/sha256.js";
 import rand from "csprng";
-import userList from "../../dataBase/userList.js";
+import userList from "../../dataBase/users.js";
 
 let userUpdateList = [];
 let singleUser = {};
@@ -16,20 +16,24 @@ let postCnt = 0; // 유저,포스트의 id 순번
 const resolvers = {
   Query: {
     // 유저 목록 검색
-    allUser: (_, __, { user }) => {
+    users: (_, __, { user }) => {
+      console.log(user, "hederss");
       if (!user)
-        throw new GraphQLError("Not Authenticated", {
+        throw new GraphQLError("No user", {
           extensions: {
-            code: "UNAUTENTICATED",
+            code: "UNAUTHENTICATED",
+            myExtension: "foo",
           },
         });
-      if (!user.authority.includes("admin"))
-        throw new GraphQLError("Not Autenticated", {
+      if (!user.roles.includes("admin"))
+        throw new GraphQLError("not authenticated", {
           extensions: {
             code: "FORBIDDEN",
+            myExtension: "foo",
           },
         });
-      return user;
+
+      return users;
     },
     // 게시글 목록 검색
     allPost: () => postList,
@@ -71,31 +75,43 @@ const resolvers = {
         };
         userList.push(newUser);
       });
+
       return true;
     },
 
-    login: (_, { userId, userPw }) => {
+    login: (_, { userId, userPw }, context) => {
       let user = userList.find((user) => user.userId === userId);
 
-      if (!user) return null;
-      if (user.token) return null;
-      if (!bcrypt.compareSync(userPw, user.userPwHash)) return null;
+      console.log(context, "컨택스트 벨류");
+      if (!user) {
+        console.log("유저가 없어!");
+        return null;
+      }
+      if (user.token) {
+        console.log(user.token, "유저 토큰이 있네?");
+        return null;
+      }
+      if (!bcrypt.compareSync(userPw, user.userPwHash)) {
+        console.log("비번이 틀렸어!!");
+        return null;
+      }
       // 비밀번호 불일치시 null
 
       user.token = sha256(rand(160, 36) + userId + userPw).toString();
       return user;
     },
+
     logout: (_, __, { user }) => {
-      if (user?.token) {
-        user.token = "";
-        return true;
-      }
-      throw new GraphQLError("Not Authenticated", {
-        extensions: {
-          code: "UNAUTENTICATED",
-        },
-      });
-      // 로그인이 안되어 있거나 토큰이 없을때.
+      console.log(user, "로그아웃시 유저는??");
+      if (!user)
+        throw new GraphQLError("Not Authenticated", {
+          extensions: {
+            code: "UNAUTENTICATED",
+          },
+        });
+
+      user.token = "";
+      return true;
     },
 
     // 어드민 계정으로 admin page에서 유저 추가.

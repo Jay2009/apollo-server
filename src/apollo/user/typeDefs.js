@@ -57,7 +57,7 @@ const typeDefs = `#graphql
   }
 
   type Query {
-    allUser: [User]
+    users: [User]!
     singleUser(userId: String!): UserSingleOutput
     allPost: [Post]
   }
