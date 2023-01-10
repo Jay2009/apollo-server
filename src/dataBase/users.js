@@ -2,7 +2,7 @@ const userList = [
   {
     id: 0,
     userId: "admin",
-    userPwHash: "",
+    userPwHash: "admin",
     name: "관리자",
     authority: "admin",
     token: "",

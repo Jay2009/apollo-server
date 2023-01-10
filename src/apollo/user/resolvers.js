@@ -22,14 +22,14 @@ const resolvers = {
         throw new GraphQLError("No user", {
           extensions: {
             code: "UNAUTHENTICATED",
-            myExtension: "foo",
+            myExtension: "noneUser",
           },
         });
       if (!user.roles.includes("admin"))
         throw new GraphQLError("not authenticated", {
           extensions: {
             code: "FORBIDDEN",
-            myExtension: "foo",
+            myExtension: "notAdmin",
           },
         });
 

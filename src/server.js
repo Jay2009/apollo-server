@@ -8,19 +8,8 @@ import userList from "./dataBase/users.js";
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context,
 });
-
-// const { url } = await startStandaloneServer(server, {
-//   context: async () => {
-//     const { cache } = server;
-//     return {
-//       dataSources: {
-//         userAPI: new UserAPI({ cache }),
-//       },
-//     };
-//   },
-//   listen: { port: 4000 },
-// });
 
 const { url } = await startStandaloneServer(server, {
   context: async ({ req, res }) => {
