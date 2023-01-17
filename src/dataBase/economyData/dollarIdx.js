@@ -4184,3 +4184,5 @@ const dollarIdx = [
     accumulatedTradingVolume: 0,
   },
 ];
+
+export default dollarIdx;

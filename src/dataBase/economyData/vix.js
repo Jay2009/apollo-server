@@ -1,4 +1,4 @@
-[
+const vix = [
   {
     localDate: "20130118",
     closePrice: 12.46,

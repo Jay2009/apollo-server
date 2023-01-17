@@ -1,4 +1,4 @@
-[
+const recession = [
   {
     start: -3552832800,
     end: -3505485600,

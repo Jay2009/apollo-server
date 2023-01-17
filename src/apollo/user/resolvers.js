@@ -13,7 +13,7 @@ let postList = [];
 let postUpdateList = [];
 let postCnt = 0; // 유저,포스트의 id 순번
 
-const resolvers = {
+const userResolvers = {
   Query: {
     // 유저 목록 검색
     users: (_, __, { user }) => {
@@ -199,4 +199,4 @@ const resolvers = {
   // },
 };
 
-export default resolvers;
+export default userResolvers;

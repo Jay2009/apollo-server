@@ -1,4 +1,4 @@
-const typeDefs = `#graphql
+const userTypeDefs = `#graphql
   type User {
     id: ID
     userId: String
@@ -77,4 +77,4 @@ const typeDefs = `#graphql
     deletePost(id: ID!): Post
   }
 `;
-export default typeDefs;
+export default userTypeDefs;
