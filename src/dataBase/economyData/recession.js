@@ -204,3 +204,5 @@ const recession = [
     end_date: "2020-04-01",
   },
 ];
+
+export default recession;

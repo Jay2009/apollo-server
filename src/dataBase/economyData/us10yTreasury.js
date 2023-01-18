@@ -3654,3 +3654,6 @@ const us10yTreasury = [
     lowPrice: 3.447,
   },
 ];
+
+
+export default us10yTreasury;

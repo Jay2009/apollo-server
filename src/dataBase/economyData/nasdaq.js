@@ -4176,3 +4176,5 @@ const nasdaq = [
     accumulatedTradingVolume: 4897294,
   },
 ];
+
+export default nasdaq;
