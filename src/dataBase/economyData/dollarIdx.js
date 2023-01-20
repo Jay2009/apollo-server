@@ -1,13 +1,5 @@
 const dollarIdx = [
   {
-    localDate: "20130118",
-    closePrice: 80.036,
-    openPrice: 79.481,
-    highPrice: 80.187,
-    lowPrice: 79.345,
-    accumulatedTradingVolume: 0,
-  },
-  {
     localDate: "20130125",
     closePrice: 79.748,
     openPrice: 80.115,
@@ -4176,11 +4168,11 @@ const dollarIdx = [
     accumulatedTradingVolume: 0,
   },
   {
-    localDate: "20230116",
-    closePrice: 101.859,
+    localDate: "20230120",
+    closePrice: 102.167,
     openPrice: 102.18,
-    highPrice: 102.279,
-    lowPrice: 101.773,
+    highPrice: 102.899,
+    lowPrice: 101.528,
     accumulatedTradingVolume: 0,
   },
 ];

@@ -1,13 +1,21 @@
 const economyTypeDefs = `#graphql
 
 type GoldIdx {
-  series : [[Float]]
+  localDate: Int
+  closePrice: Float
+  openPrice: Float
+  highPrice: Float
+  lowPrice: Float
+  accumulatedTradingVolume: Int
 }
 
 type StickyCpi {
   series : [[Float]]
 }
 
+type UsInterestRate {
+  series : [[Float]]
+}
 
 type RecessionIdx {
   start: Float
@@ -52,8 +60,9 @@ type VixIdx {
 }
 
 type Query {
-  goldIdx: GoldIdx!
+  usInterestRateIdx : UsInterestRate!
   stickyCpiIdx: StickyCpi!
+  goldIdx: [GoldIdx!]!
   dollarIdx: [DollarIdx!]!
   nasdaqIdx: [NasdaqIdx!]!
   recessionIdx : [RecessionIdx!]!

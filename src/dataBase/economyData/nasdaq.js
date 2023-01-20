@@ -1,13 +1,5 @@
 const nasdaq = [
   {
-    localDate: "20130118",
-    closePrice: 3134.71,
-    openPrice: 3113.65,
-    highPrice: 3144.05,
-    lowPrice: 3093.32,
-    accumulatedTradingVolume: 1974700,
-  },
-  {
     localDate: "20130125",
     closePrice: 3149.71,
     openPrice: 3135.63,
@@ -73,7 +65,7 @@ const nasdaq = [
   },
   {
     localDate: "20130322",
-    closePrice: 3245.0,
+    closePrice: 3245,
     openPrice: 3215.71,
     highPrice: 3257.99,
     lowPrice: 3205.42,
@@ -282,7 +274,7 @@ const nasdaq = [
   {
     localDate: "20130920",
     closePrice: 3774.73,
-    openPrice: 3755.0,
+    openPrice: 3755,
     highPrice: 3798.76,
     lowPrice: 3712.47,
     accumulatedTradingVolume: 2453349,
@@ -1009,7 +1001,7 @@ const nasdaq = [
   },
   {
     localDate: "20150619",
-    closePrice: 5117.0,
+    closePrice: 5117,
     openPrice: 5011.79,
     highPrice: 5143.32,
     lowPrice: 4985.94,
@@ -1371,7 +1363,7 @@ const nasdaq = [
     localDate: "20160429",
     closePrice: 4775.36,
     openPrice: 4891.48,
-    highPrice: 4915.0,
+    highPrice: 4915,
     lowPrice: 4740.84,
     accumulatedTradingVolume: 2309465,
   },
@@ -1451,7 +1443,7 @@ const nasdaq = [
     localDate: "20160708",
     closePrice: 4956.76,
     openPrice: 4837.06,
-    highPrice: 4959.0,
+    highPrice: 4959,
     lowPrice: 4786.01,
     accumulatedTradingVolume: 1629011,
   },
@@ -1522,7 +1514,7 @@ const nasdaq = [
   {
     localDate: "20160909",
     closePrice: 5125.91,
-    openPrice: 5260.0,
+    openPrice: 5260,
     highPrice: 5287.61,
     lowPrice: 5125.91,
     accumulatedTradingVolume: 1801406,
@@ -1545,7 +1537,7 @@ const nasdaq = [
   },
   {
     localDate: "20160930",
-    closePrice: 5312.0,
+    closePrice: 5312,
     openPrice: 5275.73,
     highPrice: 5325.88,
     lowPrice: 5251.32,
@@ -1737,7 +1729,7 @@ const nasdaq = [
   },
   {
     localDate: "20170317",
-    closePrice: 5901.0,
+    closePrice: 5901,
     openPrice: 5863.48,
     highPrice: 5912.61,
     lowPrice: 5831.88,
@@ -1803,7 +1795,7 @@ const nasdaq = [
     localDate: "20170512",
     closePrice: 6121.23,
     openPrice: 6100.66,
-    highPrice: 6133.0,
+    highPrice: 6133,
     lowPrice: 6075.68,
     accumulatedTradingVolume: 2273491,
   },
@@ -2330,7 +2322,7 @@ const nasdaq = [
   {
     localDate: "20180817",
     closePrice: 7816.33,
-    openPrice: 7848.0,
+    openPrice: 7848,
     highPrice: 7888.66,
     lowPrice: 7732.69,
     accumulatedTradingVolume: 2370589,
@@ -2412,7 +2404,7 @@ const nasdaq = [
     closePrice: 7167.21,
     openPrice: 7486.74,
     highPrice: 7520.54,
-    lowPrice: 7057.0,
+    lowPrice: 7057,
     accumulatedTradingVolume: 3335074,
   },
   {
@@ -2473,7 +2465,7 @@ const nasdaq = [
   },
   {
     localDate: "20181221",
-    closePrice: 6333.0,
+    closePrice: 6333,
     openPrice: 6886.46,
     highPrice: 6931.81,
     lowPrice: 6304.63,
@@ -2625,7 +2617,7 @@ const nasdaq = [
   },
   {
     localDate: "20190503",
-    closePrice: 8164.0,
+    closePrice: 8164,
     openPrice: 8147.65,
     highPrice: 8176.08,
     lowPrice: 7976.77,
@@ -2804,7 +2796,7 @@ const nasdaq = [
     closePrice: 7982.46,
     openPrice: 7964.09,
     highPrice: 8062.5,
-    lowPrice: 7700.0,
+    lowPrice: 7700,
     accumulatedTradingVolume: 2643123,
   },
   {
@@ -2899,7 +2891,7 @@ const nasdaq = [
     localDate: "20191227",
     closePrice: 9006.62,
     openPrice: 8950.2,
-    highPrice: 9052.0,
+    highPrice: 9052,
     lowPrice: 8934.36,
     accumulatedTradingVolume: 1596697,
   },
@@ -4174,6 +4166,14 @@ const nasdaq = [
     highPrice: 11084.008,
     lowPrice: 10589.595,
     accumulatedTradingVolume: 4897294,
+  },
+  {
+    localDate: "20230119",
+    closePrice: 10852.269,
+    openPrice: 11070.003,
+    highPrice: 11223.414,
+    lowPrice: 10804.573,
+    accumulatedTradingVolume: 2888825,
   },
 ];
 

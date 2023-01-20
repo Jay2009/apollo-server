@@ -1,12 +1,5 @@
 const us10yTreasury = [
   {
-    localDate: "20130118",
-    closePrice: 1.84,
-    openPrice: 1.848,
-    highPrice: 1.884,
-    lowPrice: 1.819,
-  },
-  {
     localDate: "20130125",
     closePrice: 1.949,
     openPrice: 1.844,
@@ -3653,7 +3646,13 @@ const us10yTreasury = [
     highPrice: 3.619,
     lowPrice: 3.447,
   },
+  {
+    localDate: "20230119",
+    closePrice: 3.399,
+    openPrice: 3.535,
+    highPrice: 3.535,
+    lowPrice: 3.375,
+  },
 ];
-
 
 export default us10yTreasury;
