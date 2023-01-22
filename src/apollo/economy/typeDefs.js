@@ -58,9 +58,20 @@ type VixIdx {
   lowPrice: Float,
   accumulatedTradingVolume: Int,
 }
+type AllEconomy {
+  usInterestRate : UsInterestRate! 
+  stickyCpi: StickyCpi!
+  gold: [GoldIdx!]!
+  dollar: [DollarIdx!]!
+  nasdaq: [NasdaqIdx!]!
+  recession : [RecessionIdx!]!
+  us10yTreasury : [Us10yTreasury!]!
+  vix : [VixIdx!]!
+}
 
 type Query {
-  usInterestRateIdx : UsInterestRate!
+  oneYearEco : AllEconomy!
+  usInterestRateIdx : UsInterestRate! 
   stickyCpiIdx: StickyCpi!
   goldIdx: [GoldIdx!]!
   dollarIdx: [DollarIdx!]!
