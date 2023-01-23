@@ -22,6 +22,7 @@ type RecessionIdx {
   end: Float
   start_date: String
   end_date: String
+  content: String
 }
 
 type DollarIdx {
@@ -60,7 +61,6 @@ type VixIdx {
 }
 type AllEconomy {
   usInterestRate : UsInterestRate! 
-  stickyCpi: StickyCpi!
   gold: [GoldIdx!]!
   dollar: [DollarIdx!]!
   nasdaq: [NasdaqIdx!]!

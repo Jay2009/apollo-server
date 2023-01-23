@@ -13,40 +13,28 @@ const economyResolvers = {
     // all Economy data
 
     oneYearEco: () => {
-      console.log(
-        dollarIdx.length,
-        goldIdx.length,
-        nasdaq.length,
-        recession.length,
-        stickyCpi.series.length,
-        us10yTreasury.length,
-        vix.length,
-        usInterestRate.series.length
-      );
-      // let sixMthStickyCpi = { series: stickyCpi.series.slice(0, 6) };
-      // let sixMthDollar = dollarIdx.slice(0, 6);
-      // let sixMthNasdaq = nasdaq.slice(0, 6);
-      // let sixMthRecession = recession.slice(0, 6);
-      // let sixMthUs10yTreasury = us10yTreasury.slice(0, 6);
-      // let sixMthVix = vix.slice(0, 6);
-
       let max = 522;
       let min = 52;
       let rand = Math.floor(Math.random() * (max - min) + min);
-      let interestRand = rand * 7.01923076923;
-      let test = interestRand - 365;
-      console.log(interestRand, test, "test");
+      let interRateRand = rand * 7.01923076923;
 
       let oneYDollar = dollarIdx.slice(rand - 52, rand);
+      let oneYGold = goldIdx.slice(rand - 52, rand);
+      let oneYNasdaq = nasdaq.slice(rand - 52, rand);
+      let oneYUS10yTreasury = us10yTreasury.slice(rand - 52, rand);
+      let oneYVix = vix.slice(rand - 52, rand);
       let oneYUsInterestRate = usInterestRate.series.slice(
-        interestRand - 365,
-        interestRand
+        interRateRand - 365,
+        interRateRand
       );
-      console.log(oneYUsInterestRate[0], oneYDollar[0]);
-      //console.log(oneYUsInterestRate);
-      //console.log(oneYearDollar, oneYearDollar.length);
 
-      let fineData = [];
+      let fineDollar = [];
+      let fineGold = [];
+      let fineNasdaq = [];
+      let fineUS10yTreasury = [];
+      let fineVix = [];
+      let fineInterRate = [];
+      // change form from normal time to unix time.
       for (let i = 0; i < oneYDollar.length; i++) {
         let toStrData = oneYDollar[i].localDate;
         let firstStr = toStrData.substring(0, 4);
@@ -55,19 +43,65 @@ const economyResolvers = {
         let bakedStr = firstStr + "-" + secondStr + "-" + thirdStr;
         let unixT = new Date(bakedStr).getTime() / 1000;
         let bakedData = { ...oneYDollar[i], localDate: unixT };
-        fineData.push(bakedData);
+        fineDollar.push(bakedData);
+      }
+      for (let i = 0; i < oneYGold.length; i++) {
+        let toStrData = oneYGold[i].localDate;
+        let firstStr = toStrData.substring(0, 4);
+        let secondStr = toStrData.substring(4, 6);
+        let thirdStr = toStrData.substring(6, 8);
+        let bakedStr = firstStr + "-" + secondStr + "-" + thirdStr;
+        let unixT = new Date(bakedStr).getTime() / 1000;
+        let bakedData = { ...oneYGold[i], localDate: unixT };
+        fineGold.push(bakedData);
+      }
+      for (let i = 0; i < oneYNasdaq.length; i++) {
+        let toStrData = oneYNasdaq[i].localDate;
+        let firstStr = toStrData.substring(0, 4);
+        let secondStr = toStrData.substring(4, 6);
+        let thirdStr = toStrData.substring(6, 8);
+        let bakedStr = firstStr + "-" + secondStr + "-" + thirdStr;
+        let unixT = new Date(bakedStr).getTime() / 1000;
+        let bakedData = { ...oneYNasdaq[i], localDate: unixT };
+        fineNasdaq.push(bakedData);
+      }
+      for (let i = 0; i < oneYUS10yTreasury.length; i++) {
+        let toStrData = oneYUS10yTreasury[i].localDate;
+        let firstStr = toStrData.substring(0, 4);
+        let secondStr = toStrData.substring(4, 6);
+        let thirdStr = toStrData.substring(6, 8);
+        let bakedStr = firstStr + "-" + secondStr + "-" + thirdStr;
+        let unixT = new Date(bakedStr).getTime() / 1000;
+        let bakedData = { ...oneYUS10yTreasury[i], localDate: unixT };
+        fineUS10yTreasury.push(bakedData);
+      }
+      for (let i = 0; i < oneYVix.length; i++) {
+        let toStrData = oneYVix[i].localDate;
+        let firstStr = toStrData.substring(0, 4);
+        let secondStr = toStrData.substring(4, 6);
+        let thirdStr = toStrData.substring(6, 8);
+        let bakedStr = firstStr + "-" + secondStr + "-" + thirdStr;
+        let unixT = new Date(bakedStr).getTime() / 1000;
+        let bakedData = { ...oneYVix[i], localDate: unixT };
+        fineVix.push(bakedData);
+      }
+
+      for (let i = 0; i < oneYUsInterestRate.length; i++) {
+        let calcuData = oneYUsInterestRate[i][0] / 1000;
+        let bakedData = [calcuData, oneYUsInterestRate[i][1]];
+        fineInterRate.push(bakedData);
       }
 
       let allEcoData = {
-        usInterestRate: { series: usInterestRate.series },
-        stickyCpi: { series: stickyCpi.series },
-        gold: goldIdx,
-        dollar: dollarIdx,
-        nasdaq: nasdaq,
+        usInterestRate: { series: fineInterRate },
+        gold: fineGold,
+        dollar: fineDollar,
+        nasdaq: fineNasdaq,
         recession: recession,
-        us10yTreasury: us10yTreasury,
-        vix: vix,
+        us10yTreasury: fineUS10yTreasury,
+        vix: fineVix,
       };
+
       return allEcoData;
     },
 
