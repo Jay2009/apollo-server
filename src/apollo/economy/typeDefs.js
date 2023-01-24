@@ -1,7 +1,7 @@
 const economyTypeDefs = `#graphql
 
 type GoldIdx {
-  localDate: Int
+  localDate: Float
   closePrice: Float
   openPrice: Float
   highPrice: Float
@@ -26,7 +26,7 @@ type RecessionIdx {
 }
 
 type DollarIdx {
-  localDate: Int
+  localDate: Float
   closePrice: Float
   openPrice: Float
   highPrice: Float
@@ -35,7 +35,7 @@ type DollarIdx {
 }
 
 type NasdaqIdx {
-  localDate: Int, 
+  localDate: Float, 
   closePrice: Float,
   openPrice: Float,
   highPrice: Float,
@@ -44,7 +44,7 @@ type NasdaqIdx {
 }
 
 type Us10yTreasury {
-  localDate: Int
+  localDate: Float
   closePrice: Float
   openPrice: Float
   highPrice: Float
@@ -52,7 +52,7 @@ type Us10yTreasury {
 }
 
 type VixIdx {
-  localDate: Int
+  localDate: Float
   closePrice: Float,
   openPrice: Float,
   highPrice: Float,
