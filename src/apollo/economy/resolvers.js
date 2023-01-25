@@ -27,73 +27,77 @@ const economyResolvers = {
         interRateRand - 365,
         interRateRand
       );
+      let dollarLocData = [];
+      let dollarCdleData = [];
+      let fineDollarData = [];
 
-      let fineDollar = [];
       let fineGold = [];
       let fineNasdaq = [];
       let fineUS10yTreasury = [];
       let fineVix = [];
       let fineInterRate = [];
       let fineRecession = [];
-      // change form from normal time to unix time.
+
+      // change localDate to unix time & transfer data format into Echart .
       for (let i = 0; i < oneYDollar.length; i++) {
-        let toStrData = oneYDollar[i].localDate;
-        let firstStr = toStrData.substring(0, 4);
-        let secondStr = toStrData.substring(4, 6);
-        let thirdStr = toStrData.substring(6, 8);
-        let bakedStr = firstStr + "-" + secondStr + "-" + thirdStr;
-        let unixT = new Date(bakedStr).getTime();
-        let bakedData = { ...oneYDollar[i], localDate: unixT };
-        fineDollar.push(bakedData);
+        let localDateStr = oneYDollar[i].localDate;
+        let firstStr = localDateStr.substring(0, 4);
+        let secondStr = localDateStr.substring(4, 6);
+        let thirdStr = localDateStr.substring(6, 8);
+        let bakedStr = firstStr + "/" + secondStr + "/" + thirdStr;
+        dollarLocData.push(bakedStr);
       }
-      console.log(fineDollar);
+      oneYDollar.map((dollarObj, i) => {
+        dollarCdleData.push([
+          dollarObj.openPrice,
+          dollarObj.closePrice,
+          dollarObj.lowPrice,
+          dollarObj.highPrice,
+        ]);
+      });
+      fineDollarData = { candleData: dollarCdleData, localDate: dollarLocData };
+
       for (let i = 0; i < oneYGold.length; i++) {
-        let toStrData = oneYGold[i].localDate;
-        let firstStr = toStrData.substring(0, 4);
-        let secondStr = toStrData.substring(4, 6);
-        let thirdStr = toStrData.substring(6, 8);
-        let bakedStr = firstStr + "-" + secondStr + "-" + thirdStr;
-        let unixT = new Date(bakedStr).getTime();
-        let bakedData = { ...oneYGold[i], localDate: unixT };
+        let localDateStr = oneYGold[i].localDate;
+        let firstStr = localDateStr.substring(0, 4);
+        let secondStr = localDateStr.substring(4, 6);
+        let thirdStr = localDateStr.substring(6, 8);
+        let bakedStr = firstStr + "/" + secondStr + "/" + thirdStr;
+        let bakedData = { ...oneYGold[i], localDate: bakedStr };
         fineGold.push(bakedData);
       }
       for (let i = 0; i < oneYNasdaq.length; i++) {
-        let toStrData = oneYNasdaq[i].localDate;
-        let firstStr = toStrData.substring(0, 4);
-        let secondStr = toStrData.substring(4, 6);
-        let thirdStr = toStrData.substring(6, 8);
-        let bakedStr = firstStr + "-" + secondStr + "-" + thirdStr;
-        let unixT = new Date(bakedStr).getTime();
-        let bakedData = { ...oneYNasdaq[i], localDate: unixT };
+        let localDateStr = oneYNasdaq[i].localDate;
+        let firstStr = localDateStr.substring(0, 4);
+        let secondStr = localDateStr.substring(4, 6);
+        let thirdStr = localDateStr.substring(6, 8);
+        let bakedStr = firstStr + "/" + secondStr + "/" + thirdStr;
+        let bakedData = { ...oneYNasdaq[i], localDate: bakedStr };
         fineNasdaq.push(bakedData);
       }
       for (let i = 0; i < oneYUS10yTreasury.length; i++) {
-        let toStrData = oneYUS10yTreasury[i].localDate;
-        let firstStr = toStrData.substring(0, 4);
-        let secondStr = toStrData.substring(4, 6);
-        let thirdStr = toStrData.substring(6, 8);
-        let bakedStr = firstStr + "-" + secondStr + "-" + thirdStr;
-        let unixT = new Date(bakedStr).getTime();
-        let bakedData = { ...oneYUS10yTreasury[i], localDate: unixT };
+        let localDateStr = oneYUS10yTreasury[i].localDate;
+        let firstStr = localDateStr.substring(0, 4);
+        let secondStr = localDateStr.substring(4, 6);
+        let thirdStr = localDateStr.substring(6, 8);
+        let bakedStr = firstStr + "/" + secondStr + "/" + thirdStr;
+        let bakedData = { ...oneYUS10yTreasury[i], localDate: bakedStr };
         fineUS10yTreasury.push(bakedData);
       }
       for (let i = 0; i < oneYVix.length; i++) {
-        let toStrData = oneYVix[i].localDate;
-        let firstStr = toStrData.substring(0, 4);
-        let secondStr = toStrData.substring(4, 6);
-        let thirdStr = toStrData.substring(6, 8);
-        let bakedStr = firstStr + "-" + secondStr + "-" + thirdStr;
-        let unixT = new Date(bakedStr).getTime();
-        let unixz = new Date(bakedStr).getTime();
-
-        let bakedData = { ...oneYVix[i], localDate: unixT };
+        let localDateStr = oneYVix[i].localDate;
+        let firstStr = localDateStr.substring(0, 4);
+        let secondStr = localDateStr.substring(4, 6);
+        let thirdStr = localDateStr.substring(6, 8);
+        let bakedStr = firstStr + "/" + secondStr + "/" + thirdStr;
+        let bakedData = { ...oneYVix[i], localDate: bakedStr };
         fineVix.push(bakedData);
       }
 
       let allEcoData = {
         usInterestRate: { series: oneYUsInterestRate },
         gold: fineGold,
-        dollar: fineDollar,
+        dollar: fineDollarData,
         nasdaq: fineNasdaq,
         recession: recession,
         us10yTreasury: fineUS10yTreasury,
@@ -122,10 +126,10 @@ const economyResolvers = {
     goldIdx: () => {
       let fineData = [];
       for (let i = 0; i < goldIdx.length; i++) {
-        let toStrData = goldIdx[i].localDate;
-        let firstStr = toStrData.substring(0, 4);
-        let secondStr = toStrData.substring(4, 6);
-        let thirdStr = toStrData.substring(6, 8);
+        let localDateStr = goldIdx[i].localDate;
+        let firstStr = localDateStr.substring(0, 4);
+        let secondStr = localDateStr.substring(4, 6);
+        let thirdStr = localDateStr.substring(6, 8);
         let bakedStr = firstStr + "-" + secondStr + "-" + thirdStr;
         let unixT = new Date(bakedStr).getTime();
         let bakedData = { ...goldIdx[i], localDate: unixT };
@@ -139,10 +143,10 @@ const economyResolvers = {
     dollarIdx: () => {
       let fineData = [];
       for (let i = 0; i < dollarIdx.length; i++) {
-        let toStrData = dollarIdx[i].localDate;
-        let firstStr = toStrData.substring(0, 4);
-        let secondStr = toStrData.substring(4, 6);
-        let thirdStr = toStrData.substring(6, 8);
+        let localDateStr = dollarIdx[i].localDate;
+        let firstStr = localDateStr.substring(0, 4);
+        let secondStr = localDateStr.substring(4, 6);
+        let thirdStr = localDateStr.substring(6, 8);
         let bakedStr = firstStr + "-" + secondStr + "-" + thirdStr;
         let unixT = new Date(bakedStr).getTime();
         let bakedData = { ...dollarIdx[i], localDate: unixT };
@@ -156,10 +160,10 @@ const economyResolvers = {
     nasdaqIdx: () => {
       let fineData = [];
       for (let i = 0; i < nasdaq.length; i++) {
-        let toStrData = nasdaq[i].localDate;
-        let firstStr = toStrData.substring(0, 4);
-        let secondStr = toStrData.substring(4, 6);
-        let thirdStr = toStrData.substring(6, 8);
+        let localDateStr = nasdaq[i].localDate;
+        let firstStr = localDateStr.substring(0, 4);
+        let secondStr = localDateStr.substring(4, 6);
+        let thirdStr = localDateStr.substring(6, 8);
         let bakedStr = firstStr + "-" + secondStr + "-" + thirdStr;
         let unixT = new Date(bakedStr).getTime();
         let bakedData = { ...nasdaq[i], localDate: unixT };
@@ -171,10 +175,10 @@ const economyResolvers = {
     us10yTreasuryIdx: () => {
       let fineData = [];
       for (let i = 0; i < us10yTreasury.length; i++) {
-        let toStrData = us10yTreasury[i].localDate;
-        let firstStr = toStrData.substring(0, 4);
-        let secondStr = toStrData.substring(4, 6);
-        let thirdStr = toStrData.substring(6, 8);
+        let localDateStr = us10yTreasury[i].localDate;
+        let firstStr = localDateStr.substring(0, 4);
+        let secondStr = localDateStr.substring(4, 6);
+        let thirdStr = localDateStr.substring(6, 8);
         let bakedStr = firstStr + "-" + secondStr + "-" + thirdStr;
         let unixT = new Date(bakedStr).getTime();
         let bakedData = { ...us10yTreasury[i], localDate: unixT };
@@ -186,10 +190,10 @@ const economyResolvers = {
     vixIdx: () => {
       let fineData = [];
       for (let i = 0; i < vix.length; i++) {
-        let toStrData = vix[i].localDate;
-        let firstStr = toStrData.substring(0, 4);
-        let secondStr = toStrData.substring(4, 6);
-        let thirdStr = toStrData.substring(6, 8);
+        let localDateStr = vix[i].localDate;
+        let firstStr = localDateStr.substring(0, 4);
+        let secondStr = localDateStr.substring(4, 6);
+        let thirdStr = localDateStr.substring(6, 8);
         let bakedStr = firstStr + "-" + secondStr + "-" + thirdStr;
         let unixT = new Date(bakedStr).getTime();
         let bakedData = { ...vix[i], localDate: unixT };
