@@ -31,11 +31,22 @@ const economyResolvers = {
       let dollarCdleData = [];
       let fineDollarData = [];
 
-      let fineGold = [];
-      let fineNasdaq = [];
-      let fineUS10yTreasury = [];
-      let fineVix = [];
-      let fineInterRate = [];
+      let goldLocData = [];
+      let goldCdleData = [];
+      let fineGoldData = [];
+
+      let nasdaqLocData = [];
+      let nasdaqCdlData = [];
+      let fineNasdaqData = [];
+
+      let uS10yTreasuryLocData = [];
+      let uS10yTreasuryCdlData = [];
+      let fineUS10yTreasuryData = [];
+
+      let vixLocData = [];
+      let vixCdlData = [];
+      let fineVixData = [];
+
       let fineRecession = [];
 
       // change localDate to unix time & transfer data format into Echart .
@@ -55,7 +66,7 @@ const economyResolvers = {
           dollarObj.highPrice,
         ]);
       });
-      fineDollarData = { candleData: dollarCdleData, localDate: dollarLocData };
+      fineDollarData = { localDate: dollarLocData, candleData: dollarCdleData };
 
       for (let i = 0; i < oneYGold.length; i++) {
         let localDateStr = oneYGold[i].localDate;
@@ -63,45 +74,83 @@ const economyResolvers = {
         let secondStr = localDateStr.substring(4, 6);
         let thirdStr = localDateStr.substring(6, 8);
         let bakedStr = firstStr + "/" + secondStr + "/" + thirdStr;
-        let bakedData = { ...oneYGold[i], localDate: bakedStr };
-        fineGold.push(bakedData);
+        goldLocData.push(bakedStr);
       }
+      oneYGold.map((goldObj, i) => {
+        goldCdleData.push([
+          goldObj.openPrice,
+          goldObj.closePrice,
+          goldObj.lowPrice,
+          goldObj.highPrice,
+        ]);
+      });
+      fineGoldData = { localDate: goldLocData, candleData: goldCdleData };
+
       for (let i = 0; i < oneYNasdaq.length; i++) {
         let localDateStr = oneYNasdaq[i].localDate;
         let firstStr = localDateStr.substring(0, 4);
         let secondStr = localDateStr.substring(4, 6);
         let thirdStr = localDateStr.substring(6, 8);
         let bakedStr = firstStr + "/" + secondStr + "/" + thirdStr;
-        let bakedData = { ...oneYNasdaq[i], localDate: bakedStr };
-        fineNasdaq.push(bakedData);
+        nasdaqLocData.push(bakedStr);
       }
+      oneYNasdaq.map((nasdaqObj, i) => {
+        nasdaqCdlData.push([
+          nasdaqObj.openPrice,
+          nasdaqObj.closePrice,
+          nasdaqObj.lowPrice,
+          nasdaqObj.highPrice,
+        ]);
+      });
+      fineNasdaqData = { localDate: nasdaqLocData, candleData: nasdaqCdlData };
+
       for (let i = 0; i < oneYUS10yTreasury.length; i++) {
         let localDateStr = oneYUS10yTreasury[i].localDate;
         let firstStr = localDateStr.substring(0, 4);
         let secondStr = localDateStr.substring(4, 6);
         let thirdStr = localDateStr.substring(6, 8);
         let bakedStr = firstStr + "/" + secondStr + "/" + thirdStr;
-        let bakedData = { ...oneYUS10yTreasury[i], localDate: bakedStr };
-        fineUS10yTreasury.push(bakedData);
+        uS10yTreasuryLocData.push(bakedStr);
       }
+      oneYUS10yTreasury.map((us10yTreasuryObj, i) => {
+        uS10yTreasuryCdlData.push([
+          us10yTreasuryObj.openPrice,
+          us10yTreasuryObj.closePrice,
+          us10yTreasuryObj.lowPrice,
+          us10yTreasuryObj.highPrice,
+        ]);
+      });
+      fineUS10yTreasuryData = {
+        localDate: uS10yTreasuryLocData,
+        candleData: uS10yTreasuryCdlData,
+      };
+
       for (let i = 0; i < oneYVix.length; i++) {
         let localDateStr = oneYVix[i].localDate;
         let firstStr = localDateStr.substring(0, 4);
         let secondStr = localDateStr.substring(4, 6);
         let thirdStr = localDateStr.substring(6, 8);
         let bakedStr = firstStr + "/" + secondStr + "/" + thirdStr;
-        let bakedData = { ...oneYVix[i], localDate: bakedStr };
-        fineVix.push(bakedData);
+        vixLocData.push(bakedStr);
       }
+      oneYVix.map((vixObj, i) => {
+        vixCdlData.push([
+          vixObj.openPrice,
+          vixObj.closePrice,
+          vixObj.lowPrice,
+          vixObj.highPrice,
+        ]);
+      });
+      fineVixData = { localDate: vixLocData, candleData: vixCdlData };
 
       let allEcoData = {
         usInterestRate: { series: oneYUsInterestRate },
-        gold: fineGold,
+        gold: fineGoldData,
         dollar: fineDollarData,
-        nasdaq: fineNasdaq,
+        nasdaq: fineNasdaqData,
         recession: recession,
-        us10yTreasury: fineUS10yTreasury,
-        vix: fineVix,
+        us10yTreasury: fineUS10yTreasuryData,
+        vix: fineVixData,
       };
 
       return allEcoData;

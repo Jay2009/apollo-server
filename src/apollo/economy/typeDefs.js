@@ -1,12 +1,8 @@
 const economyTypeDefs = `#graphql
 
 type GoldIdx {
-  localDate: String
-  closePrice: Float
-  openPrice: Float
-  highPrice: Float
-  lowPrice: Float
-  accumulatedTradingVolume: Int
+  localDate: [String]
+  candleData : [[Float]]
 }
 
 type StickyCpi {
@@ -31,38 +27,27 @@ type DollarIdx {
 }
 
 type NasdaqIdx {
-  localDate: String, 
-  closePrice: Float,
-  openPrice: Float,
-  highPrice: Float,
-  lowPrice: Float,
-  accumulatedTradingVolume: Int,
+  localDate: [String]
+  candleData : [[Float]]
 }
 
 type Us10yTreasury {
-  localDate: String
-  closePrice: Float
-  openPrice: Float
-  highPrice: Float
-  lowPrice: Float
+  localDate: [String]
+  candleData : [[Float]]
 }
 
 type VixIdx {
-  localDate: String
-  closePrice: Float,
-  openPrice: Float,
-  highPrice: Float,
-  lowPrice: Float,
-  accumulatedTradingVolume: Int,
+  localDate: [String]
+  candleData : [[Float]]
 }
 type AllEconomy {
   usInterestRate : UsInterestRate! 
-  gold: [GoldIdx!]!
+  gold: GoldIdx!
   dollar: DollarIdx!
-  nasdaq: [NasdaqIdx!]!
+  nasdaq: NasdaqIdx!
   recession : [RecessionIdx!]!
-  us10yTreasury : [Us10yTreasury!]!
-  vix : [VixIdx!]!
+  us10yTreasury : Us10yTreasury!
+  vix : VixIdx!
 }
 
 type Query {
