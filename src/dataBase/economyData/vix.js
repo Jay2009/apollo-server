@@ -1,21 +1,5 @@
 const vix = [
   {
-    localDate: "20130125",
-    closePrice: 12.89,
-    openPrice: 13.28,
-    highPrice: 13.5,
-    lowPrice: 12.3,
-    accumulatedTradingVolume: 0,
-  },
-  {
-    localDate: "20130201",
-    closePrice: 12.9,
-    openPrice: 13.29,
-    highPrice: 14.43,
-    lowPrice: 12.72,
-    accumulatedTradingVolume: 0,
-  },
-  {
     localDate: "20130208",
     closePrice: 13.02,
     openPrice: 14,
@@ -4169,10 +4153,26 @@ const vix = [
   },
   {
     localDate: "20230120",
-    closePrice: 20.39,
+    closePrice: 19.85,
     openPrice: 19.44,
     highPrice: 21.71,
     lowPrice: 18.71,
+    accumulatedTradingVolume: 0,
+  },
+  {
+    localDate: "20230127",
+    closePrice: 18.51,
+    openPrice: 20.21,
+    highPrice: 20.9,
+    lowPrice: 17.97,
+    accumulatedTradingVolume: 0,
+  },
+  {
+    localDate: "20230203",
+    closePrice: 18.33,
+    openPrice: 19.76,
+    highPrice: 20.7,
+    lowPrice: 17.06,
     accumulatedTradingVolume: 0,
   },
 ];

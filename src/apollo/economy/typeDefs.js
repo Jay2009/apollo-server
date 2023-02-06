@@ -12,6 +12,9 @@ type StickyCpi {
 type UsInterestRate {
   series : [[Float]]
 }
+type UsUnemployRate {
+  series : [[Float]]
+}
 
 type RecessionIdx {
   start: Float
@@ -46,7 +49,7 @@ type AllEconomy {
   dollar: DollarIdx!
   nasdaq: NasdaqIdx!
   recession : [RecessionIdx!]!
-  us10yTreasury : Us10yTreasury!
+  usUnemployRate : UsUnemployRate!
   vix : VixIdx!
 }
 

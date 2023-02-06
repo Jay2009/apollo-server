@@ -7,7 +7,7 @@ import stickyCpi from "../../dataBase/economyData/stickyCPI.js";
 import us10yTreasury from "../../dataBase/economyData/us10yTreasury.js";
 import vix from "../../dataBase/economyData/vix.js";
 import usInterestRate from "../../dataBase/economyData/usInterestRate.js";
-
+import usUnemployRate from "../../dataBase/economyData/usUnemployRate.js";
 const economyResolvers = {
   Query: {
     // all Economy data
@@ -16,7 +16,7 @@ const economyResolvers = {
       let max = 522;
       let min = 52;
       let rand = Math.floor(Math.random() * (max - min) + min);
-      let interRateRand = rand * 7.01923076923;
+      let fedRandNum = Math.floor(rand / 4.333333333);
 
       let oneYDollar = dollarIdx.slice(rand - 52, rand);
       let oneYGold = goldIdx.slice(rand - 52, rand);
@@ -24,9 +24,14 @@ const economyResolvers = {
       let oneYUS10yTreasury = us10yTreasury.slice(rand - 52, rand);
       let oneYVix = vix.slice(rand - 52, rand);
       let oneYUsInterestRate = usInterestRate.series.slice(
-        interRateRand - 365,
-        interRateRand
+        fedRandNum - 12,
+        fedRandNum
       );
+      let oneYUsUnemployRate = usUnemployRate.series.slice(
+        fedRandNum - 12,
+        fedRandNum
+      );
+
       let dollarLocData = [];
       let dollarCdleData = [];
       let fineDollarData = [];
@@ -38,10 +43,6 @@ const economyResolvers = {
       let nasdaqLocData = [];
       let nasdaqCdlData = [];
       let fineNasdaqData = [];
-
-      let uS10yTreasuryLocData = [];
-      let uS10yTreasuryCdlData = [];
-      let fineUS10yTreasuryData = [];
 
       let vixLocData = [];
       let vixCdlData = [];
@@ -104,27 +105,6 @@ const economyResolvers = {
       });
       fineNasdaqData = { localDate: nasdaqLocData, candleData: nasdaqCdlData };
 
-      for (let i = 0; i < oneYUS10yTreasury.length; i++) {
-        let localDateStr = oneYUS10yTreasury[i].localDate;
-        let firstStr = localDateStr.substring(0, 4);
-        let secondStr = localDateStr.substring(4, 6);
-        let thirdStr = localDateStr.substring(6, 8);
-        let bakedStr = firstStr + "/" + secondStr + "/" + thirdStr;
-        uS10yTreasuryLocData.push(bakedStr);
-      }
-      oneYUS10yTreasury.map((us10yTreasuryObj, i) => {
-        uS10yTreasuryCdlData.push([
-          us10yTreasuryObj.openPrice,
-          us10yTreasuryObj.closePrice,
-          us10yTreasuryObj.lowPrice,
-          us10yTreasuryObj.highPrice,
-        ]);
-      });
-      fineUS10yTreasuryData = {
-        localDate: uS10yTreasuryLocData,
-        candleData: uS10yTreasuryCdlData,
-      };
-
       for (let i = 0; i < oneYVix.length; i++) {
         let localDateStr = oneYVix[i].localDate;
         let firstStr = localDateStr.substring(0, 4);
@@ -149,7 +129,7 @@ const economyResolvers = {
         dollar: fineDollarData,
         nasdaq: fineNasdaqData,
         recession: recession,
-        us10yTreasury: fineUS10yTreasuryData,
+        usUnemployRate: { series: oneYUsUnemployRate },
         vix: fineVixData,
       };
 
