@@ -16,7 +16,7 @@ const economyResolvers = {
       let max = 522;
       let min = 52;
       let rand = Math.floor(Math.random() * (max - min) + min);
-      let fedRandNum = Math.floor(rand / 4.333333333);
+      let fedRandNum = Math.ceil(rand / 4.333333333) + 1;
 
       let oneYDollar = dollarIdx.slice(rand - 52, rand);
       let oneYGold = goldIdx.slice(rand - 52, rand);
