@@ -17,7 +17,7 @@ const userResolvers = {
   Query: {
     // 유저 목록 검색
     users: (_, __, { user }) => {
-      console.log(user, "hederss");
+      console.log(userList, "hederss");
       if (!user)
         throw new GraphQLError("No user", {
           extensions: {
@@ -89,7 +89,7 @@ const userResolvers = {
       }
       if (user.token) {
         console.log(user.token, "유저 토큰이 있네?");
-        return null;
+        user.token = "";
       }
       if (!bcrypt.compareSync(userPw, user.userPwHash)) {
         console.log("비번이 틀렸어!!");
