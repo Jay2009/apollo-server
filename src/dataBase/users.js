@@ -1,4 +1,4 @@
-const userList = [
+let userList = [
   {
     id: 0,
     userId: "admin",
@@ -27,5 +27,6 @@ const userList = [
     post: [],
   },
 ];
+console.log(global.userList, "globallllll");
 
-export default userList;
+global.userList = userList;

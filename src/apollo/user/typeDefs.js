@@ -39,7 +39,8 @@ const userTypeDefs = `#graphql
     userId: String
     userPw: String
     name: String
-    authority: String!
+    authority: String
+    token: String
   }
   
   input PostInput {

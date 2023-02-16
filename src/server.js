@@ -1,8 +1,21 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import userList from "./dataBase/users.js";
+//import userList from "./dataBase/users.js";
 import typeDefs from "./apollo/typeDefs.js";
 import resolvers from "./apollo/resolvers.js";
+let userList = [
+  {
+    id: 1,
+    userId: "admin",
+    userPwHash: "$2b$10$FEIMUp/pqdqu/LsqID6MOu3U2.QnFO6UgzRD7M8h9wTrgaTclRwhe",
+    name: "Admin",
+    authority: "admin",
+    token: "",
+    post: [],
+  },
+];
+
+global.userList = userList;
 
 const server = new ApolloServer({
   typeDefs,
@@ -11,9 +24,11 @@ const server = new ApolloServer({
 
 const { url } = await startStandaloneServer(server, {
   context: async ({ req, res }) => {
-    const token = req.headers.authorization || "";
-    if (token.length != 64) return { user: null };
-    const user = userList.find((user) => user.token === token);
+    const token = (await req.headers.authorization) || "";
+    if (token.length != 64) {
+      return { user: null };
+    }
+    const user = global.userList.find((user) => user.token === token);
     return { user };
   },
 

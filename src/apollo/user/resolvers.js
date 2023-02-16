@@ -2,8 +2,9 @@ import { GraphQLError } from "graphql";
 import bcrypt from "bcrypt";
 import sha256 from "crypto-js/sha256.js";
 import rand from "csprng";
-import userList from "../../dataBase/users.js";
+//import userList from "../../dataBase/users.js";
 
+let userList = global.userList;
 let userUpdateList = [];
 let singleUser = {};
 let loginUser = {};
@@ -17,7 +18,7 @@ const userResolvers = {
   Query: {
     // 유저 목록 검색
     users: (_, __, { user }) => {
-      console.log(userList, "hederss");
+      console.log(global.userList, "모든 유저들");
       if (!user)
         throw new GraphQLError("No user", {
           extensions: {
@@ -40,7 +41,7 @@ const userResolvers = {
 
     // client쪽에서 받은 파라미터를 통한 싱글 유저 검색
     singleUser(_, userId) {
-      userList.forEach((user) => {
+      global.userList.forEach((user) => {
         if (user.userId == userId.userId) {
           singleUser = { ...user };
           // 스프레이드 연산자는 나중 추가되어지는 객체 속성값이 있을 수 있어 추가.
@@ -62,27 +63,25 @@ const userResolvers = {
   },
   Mutation: {
     signup: (_, { userId, userPw, name }) => {
-      if (userList.find((user) => user.userId == userId)) return false;
-
+      if (global.userList.find((user) => user.userId == userId)) return false;
       bcrypt.hash(userPw, 10, function (err, userPwHash) {
         const newUser = {
-          id: userList.length + 1,
+          id: global.userList.length + 1,
           userId,
           userPwHash,
           name,
           authority: "user",
           token: "",
         };
-        userList.push(newUser);
+        global.userList.push(newUser);
       });
 
       return true;
     },
 
-    login: (_, { userId, userPw }, context) => {
-      let user = userList.find((user) => user.userId === userId);
-
-      console.log(context, "컨택스트 벨류");
+    login: async (_, { userId, userPw }, context) => {
+      await console.log(context, "contexttt");
+      let user = global.userList.find((user) => user.userId === userId);
       if (!user) {
         console.log("유저가 없어!");
         return null;
@@ -102,7 +101,7 @@ const userResolvers = {
     },
 
     logout: (_, __, { user }) => {
-      console.log(user, "로그아웃시 유저는??");
+      console.log(user, "yoo");
       if (!user)
         throw new GraphQLError("Not Authenticated", {
           extensions: {
@@ -123,19 +122,40 @@ const userResolvers = {
     },
 
     // 유저 업데이트
-    updateUser(_, input, { UserUpdateInput }) {
+    async updateUser(_, input, context) {
       const inputObj = Object.values(input);
       const updateUser = { ...inputObj[0] };
-
-      userList.forEach((user) => {
-        if (user.userId != updateUser.userId) {
-          userUpdateList.push(user);
-        }
-      });
-      userList = [];
-      userUpdateList.push({ ...updateUser });
-      userList = userUpdateList;
-      return userList;
+      let bakeUserList = [];
+      let newPwHash;
+      //input form data
+      // let bakeUserList = userList.find((user) => {
+      //   return user.userId == updateUser.userId;
+      // }); // bake user list
+      if (updateUser.userPw) {
+        newPwHash = await bcrypt.hash(updateUser.userPw, 10);
+      }
+      if (updateUser.token == context.user.token) {
+        // auth with updateUser token and context user token
+        global.userList.forEach((user) => {
+          if (user.userId != updateUser.userId) {
+            bakeUserList.push(user);
+          }
+        });
+        bakeUserList.push({
+          ...context.user,
+          userId: updateUser.userId,
+          name: updateUser.name,
+          userPwHash: updateUser.userPw ? newPwHash : context.user.userPwHash,
+        });
+        global.userList = bakeUserList;
+      } else {
+        throw new GraphQLError("Token is not valid!", {
+          extensions: {
+            code: "UNAUTENTICATED",
+          },
+        });
+      }
+      return global.userList;
     },
 
     // 게시글 추가
