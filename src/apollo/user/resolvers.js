@@ -160,8 +160,17 @@ const userResolvers = {
 
     // 게시글 추가
     createPost(_, input, { PostInput }) {
+      let today = new Date();   
+      let year = today.getFullYear(); 
+      let month = today.getMonth() + 1;  
+      let date = today.getDate();   
+      let hour = today.getHours();
+      let min = today.getMinutes();
+      let createDate = year+ "/" + month + "/" + date+ ":" +hour+ "/" +min
+      
       const postObj = Object.values(input);
-      const post = { ...postObj[0], id: postCnt++ };
+      const post = { ...postObj[0], id: postCnt++, createAt: createDate};
+      console.log(post,"all data");
       postList.push(post);
       return post;
     },

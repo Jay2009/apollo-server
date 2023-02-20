@@ -17,12 +17,12 @@ const userTypeDefs = `#graphql
     post: [Post]
   }
 
-  
   type Post {
     id: ID
     title: String
     writer: String
     content: String
+    createdAt: String
   }
 
   input UserCreateInput {
@@ -47,6 +47,7 @@ const userTypeDefs = `#graphql
     id: ID
     title: String!
     writer: String!
+    tags: [String]
     content: String
   }
 
