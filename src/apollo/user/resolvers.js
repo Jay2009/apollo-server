@@ -10,8 +10,25 @@ let singleUser = {};
 let loginUser = {};
 let userCnt = 3;
 
-let postList = [];
-let postUpdateList = [];
+let postList = [
+  {
+    id: 0,
+    title: "test",
+    writer: "Admin",
+    createdAt: "2023/02/23-09:00",
+    tags: ["stock", "realEstate"],
+    content: "testttt content",
+  },
+  {
+    id: 1,
+    title: "test2",
+    writer: "Admin",
+    createdAt: "2023/02/23-09:30",
+    tags: ["stock", "others"],
+    content: "testttt content",
+  },
+];
+
 let postCnt = 0; // 유저,포스트의 id 순번
 
 const userResolvers = {
@@ -37,7 +54,10 @@ const userResolvers = {
       return users;
     },
     // 게시글 목록 검색
-    allPost: () => postList,
+    allPost: () => {
+      console.log(postList, "포스트 리스트으으@@@");
+      return postList;
+    },
 
     // client쪽에서 받은 파라미터를 통한 싱글 유저 검색
     singleUser(_, userId) {
@@ -113,14 +133,6 @@ const userResolvers = {
       return true;
     },
 
-    // 어드민 계정으로 admin page에서 유저 추가.
-    createUser(_, input, { UserCreateInput }) {
-      const inputObj = Object.values(input);
-      const user = { ...inputObj[0], id: userCnt++ };
-      userList.push(user);
-      return user;
-    },
-
     // 유저 업데이트
     async updateUser(_, input, context) {
       const inputObj = Object.values(input);
@@ -158,49 +170,40 @@ const userResolvers = {
       return global.userList;
     },
 
-    // 게시글 추가
+    // 게시글 생성
     createPost(_, input, { PostInput }) {
-      let today = new Date();   
-      let year = today.getFullYear(); 
-      let month = today.getMonth() + 1;  
-      let date = today.getDate();   
+      let today = new Date();
+      let year = today.getFullYear();
+      let month = today.getMonth() + 1;
+      let date = today.getDate();
       let hour = today.getHours();
       let min = today.getMinutes();
-      let createDate = year+ "/" + month + "/" + date+ ":" +hour+ "/" +min
-      
+      let createDate = year + "/" + month + "/" + date + "-" + hour + ":" + min;
+
       const postObj = Object.values(input);
-      const post = { ...postObj[0], id: postCnt++, createAt: createDate};
-      console.log(post,"all data");
+      const post = {
+        ...postObj[0],
+        id: postList.length - 1 + 1,
+        createdAt: createDate,
+      };
       postList.push(post);
-      return post;
+      console.log(postList, "sdfsdf");
+      return postList;
     },
 
     // 게시글 업데이트
     updatePost(_, input, { PostUpdateInput }) {
+      let postUpdateList = [];
       const postObj = Object.values(input);
       const updatePost = { ...postObj[0] };
-
       postList.forEach((post) => {
         if (post.writer != updatePost.writer) {
           postUpdateList.push(user);
         }
       });
-
-      postList = [];
       postUpdateList.push({ ...updatePost });
       postList = postUpdateList;
       return postList;
-    },
-
-    // 유저삭제
-    deleteUser(_, { id }) {
-      const idx = userList.findIndex((user) => user.id == id);
-      let user = {};
-      if (idx >= 0) {
-        user = userList[idx];
-        userList.splice(idx, 1);
-      }
-      return user;
     },
 
     // 게시글 삭제
@@ -212,6 +215,24 @@ const userResolvers = {
         postList.splice(idx, 1);
       }
       return post;
+    },
+
+    // 어드민 계정으로 admin page에서 유저 추가.
+    createUser(_, input, { UserCreateInput }) {
+      const inputObj = Object.values(input);
+      const user = { ...inputObj[0], id: userCnt++ };
+      userList.push(user);
+      return user;
+    },
+    // 유저삭제
+    deleteUser(_, { id }) {
+      const idx = userList.findIndex((user) => user.id == id);
+      let user = {};
+      if (idx >= 0) {
+        user = userList[idx];
+        userList.splice(idx, 1);
+      }
+      return user;
     },
   },
 

@@ -23,6 +23,7 @@ const userTypeDefs = `#graphql
     writer: String
     content: String
     createdAt: String
+    tags:[String]
   }
 
   input UserCreateInput {
