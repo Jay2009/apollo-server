@@ -56,7 +56,9 @@ const userTypeDefs = `#graphql
     id: ID
     title: String!
     writer: String!
+    tags: [String]
     content: String
+    createdAt:String
   }
 
   type Query {
@@ -77,7 +79,7 @@ const userTypeDefs = `#graphql
     updatePost(input: PostUpdateInput!): Post
 
     deleteUser(id: ID!): User
-    deletePost(id: ID!): Post
+    deletePost(input: String!): Post
   }
 `;
 export default userTypeDefs;

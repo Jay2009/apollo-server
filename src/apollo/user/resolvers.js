@@ -29,7 +29,7 @@ let postList = [
   },
 ];
 
-let postCnt = 0; // 유저,포스트의 id 순번
+let postCnt = 2; // 유저,포스트의 id 순번
 
 const userResolvers = {
   Query: {
@@ -55,7 +55,6 @@ const userResolvers = {
     },
     // 게시글 목록 검색
     allPost: () => {
-      console.log(postList, "포스트 리스트으으@@@");
       return postList;
     },
 
@@ -183,11 +182,10 @@ const userResolvers = {
       const postObj = Object.values(input);
       const post = {
         ...postObj[0],
-        id: postList.length - 1 + 1,
+        id: postCnt++,
         createdAt: createDate,
       };
       postList.push(post);
-      console.log(postList, "sdfsdf");
       return postList;
     },
 
@@ -196,25 +194,31 @@ const userResolvers = {
       let postUpdateList = [];
       const postObj = Object.values(input);
       const updatePost = { ...postObj[0] };
+      // postList.find(() => {});
+
       postList.forEach((post) => {
-        if (post.writer != updatePost.writer) {
-          postUpdateList.push(user);
+        if (post.id != updatePost.id) {
+          postUpdateList.push(post);
         }
       });
       postUpdateList.push({ ...updatePost });
-      postList = postUpdateList;
+      postList = postUpdateList.sort(function (a, b) {
+        return a.id - b.id;
+      });
+      console.log(postList, "순서 보자아아아");
       return postList;
     },
 
     // 게시글 삭제
-    deletePost(_, { id }) {
-      const idx = postList.findIndex((post) => post.id == id);
+    deletePost(_, { input }) {
+      console.log(input, "input 뭐???");
+      const idx = postList.findIndex((post) => post.id == input);
       let post = {};
       if (idx >= 0) {
         post = postList[idx];
         postList.splice(idx, 1);
       }
-      return post;
+      return postList;
     },
 
     // 어드민 계정으로 admin page에서 유저 추가.
