@@ -14,7 +14,7 @@ let postList = [
   {
     id: 0,
     title: "test",
-    writer: "Admin",
+    writer: "admin",
     createdAt: "2023/02/23-09:00",
     tags: ["stock", "realEstate"],
     content: "testttt content",
@@ -22,7 +22,7 @@ let postList = [
   {
     id: 1,
     title: "test2",
-    writer: "Admin",
+    writer: "admin",
     createdAt: "2023/02/23-09:30",
     tags: ["stock", "others"],
     content: "testttt content",
