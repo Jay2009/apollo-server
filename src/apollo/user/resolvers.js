@@ -13,11 +13,11 @@ let userCnt = 3;
 let postList = [
   {
     id: 0,
-    title: "test",
+    title: "Welcome to Jay web.",
     writer: "admin",
     createdAt: "2023/02/23-09:00",
     tags: ["stock", "realEstate"],
-    content: "testttt content",
+    content: "Share any information with people in Mars!.",
   },
   {
     id: 1,
