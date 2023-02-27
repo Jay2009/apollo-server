@@ -16,16 +16,16 @@ let postList = [
     title: "Welcome to Jay web.",
     writer: "admin",
     createdAt: "2023/02/23-09:00",
-    tags: ["stock", "realEstate"],
+    tags: ["others"],
     content: "Share any information with people in Mars!.",
   },
   {
     id: 1,
-    title: "test2",
+    title: "Test",
     writer: "admin",
     createdAt: "2023/02/23-09:30",
     tags: ["stock", "others"],
-    content: "testttt content",
+    content: "test content",
   },
 ];
 
