@@ -27,6 +27,5 @@ let userList = [
     post: [],
   },
 ];
-console.log(global.userList, "globallllll");
 
 global.userList = userList;

@@ -2,7 +2,6 @@ import { GraphQLError } from "graphql";
 import bcrypt from "bcrypt";
 import sha256 from "crypto-js/sha256.js";
 import rand from "csprng";
-//import userList from "../../dataBase/users.js";
 
 let userList = global.userList;
 let userUpdateList = [];
@@ -35,7 +34,6 @@ const userResolvers = {
   Query: {
     // 유저 목록 검색
     users: (_, __, { user }) => {
-      console.log(global.userList, "모든 유저들");
       if (!user)
         throw new GraphQLError("No user", {
           extensions: {
@@ -68,17 +66,6 @@ const userResolvers = {
       });
       return singleUser;
     },
-
-    // findLoginUser: ({ loginFormData }) =>
-    //   userList.find((user) => {
-    //     user.userId == loginFormData.userId &&
-    //       user.userPw == loginFormData.userPw;
-    //   }),
-
-    // findBook: ({ id }) =>
-    //   bookList.find((book) => {
-    //     book.id == id;
-    //   }),
   },
   Mutation: {
     signup: (_, { userId, userPw, name }) => {
@@ -99,18 +86,14 @@ const userResolvers = {
     },
 
     login: async (_, { userId, userPw }, context) => {
-      await console.log(context, "contexttt");
       let user = global.userList.find((user) => user.userId === userId);
       if (!user) {
-        console.log("유저가 없어!");
         return null;
       }
       if (user.token) {
-        console.log(user.token, "유저 토큰이 있네?");
         user.token = "";
       }
       if (!bcrypt.compareSync(userPw, user.userPwHash)) {
-        console.log("비번이 틀렸어!!");
         return null;
       }
       // 비밀번호 불일치시 null
@@ -120,7 +103,6 @@ const userResolvers = {
     },
 
     logout: (_, __, { user }) => {
-      console.log(user, "yoo");
       if (!user)
         throw new GraphQLError("Not Authenticated", {
           extensions: {
@@ -138,15 +120,10 @@ const userResolvers = {
       const updateUser = { ...inputObj[0] };
       let bakeUserList = [];
       let newPwHash;
-      //input form data
-      // let bakeUserList = userList.find((user) => {
-      //   return user.userId == updateUser.userId;
-      // }); // bake user list
       if (updateUser.userPw) {
         newPwHash = await bcrypt.hash(updateUser.userPw, 10);
       }
       if (updateUser.token == context.user.token) {
-        // auth with updateUser token and context user token
         global.userList.forEach((user) => {
           if (user.userId != updateUser.userId) {
             bakeUserList.push(user);
@@ -194,7 +171,6 @@ const userResolvers = {
       let postUpdateList = [];
       const postObj = Object.values(input);
       const updatePost = { ...postObj[0] };
-      // postList.find(() => {});
 
       postList.forEach((post) => {
         if (post.id != updatePost.id) {
@@ -205,13 +181,11 @@ const userResolvers = {
       postList = postUpdateList.sort(function (a, b) {
         return a.id - b.id;
       });
-      console.log(postList, "순서 보자아아아");
       return postList;
     },
 
     // 게시글 삭제
     deletePost(_, { input }) {
-      console.log(input, "input 뭐???");
       const idx = postList.findIndex((post) => post.id == input);
       let post = {};
       if (idx >= 0) {
@@ -239,18 +213,6 @@ const userResolvers = {
       return user;
     },
   },
-
-  // 연쇄 리졸버
-  // User: {
-  //   // 유저의 게시글 검색
-  //   posts(parent) {
-  //     const list = [];
-  //     postList.forEach((post) => {
-  //       if (post.title === parent.name) list.push(post);
-  //     });
-  //     return list;
-  //   },
-  // },
 };
 
 export default userResolvers;

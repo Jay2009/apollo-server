@@ -1,6 +1,5 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-//import userList from "./dataBase/users.js";
 import typeDefs from "./apollo/typeDefs.js";
 import resolvers from "./apollo/resolvers.js";
 let userList = [
@@ -34,5 +33,3 @@ const { url } = await startStandaloneServer(server, {
 
   listen: { port: process.env.PORT || 4000 },
 });
-
-console.log(`🚀  Server ready at: ${url}`);
